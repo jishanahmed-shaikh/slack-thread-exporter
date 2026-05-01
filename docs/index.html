@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>slack-thread-exporter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#fafafa;--surface:#fff;--border:#e5e7eb;--text:#111827;--muted:#6b7280;--accent:#4a154b;--mono:'JetBrains Mono',monospace;--radius:10px}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+    nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+    .nav-brand{font-family:var(--mono);font-weight:500;font-size:.9rem;color:var(--accent)}
+    .nav-links a{color:var(--muted);text-decoration:none;margin-left:1.5rem;font-size:.82rem}.nav-links a:hover{color:var(--text)}
+    .hero{max-width:820px;margin:0 auto;padding:5rem 2rem 3rem;text-align:center}
+    .hero h1{font-size:clamp(2rem,5vw,2.8rem);font-weight:700;letter-spacing:-.03em;margin-bottom:1rem}
+    .hero h1 em{font-style:normal;color:var(--accent)}
+    .hero p{color:var(--muted);font-size:1rem;max-width:500px;margin:0 auto 2rem;font-weight:300}
+    .hero-actions{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem}
+    .btn{padding:.6rem 1.25rem;border-radius:8px;font-size:.875rem;font-weight:500;text-decoration:none;transition:all .15s;display:inline-block}
+    .btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{opacity:.85}
+    .install-box{max-width:460px;margin:0 auto 4rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+    .install-top{padding:.4rem 1rem;background:var(--bg);border-bottom:1px solid var(--border);font-size:.7rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between}
+    .copy-btn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:.7rem;padding:.15rem .5rem;border-radius:4px;font-family:'Inter',sans-serif}.copy-btn:hover{background:var(--border)}
+    .install-cmd{padding:.9rem 1rem;font-family:var(--mono);font-size:.85rem}
+    .install-cmd .dollar{color:var(--accent)}
+    .section{max-width:900px;margin:0 auto;padding:0 2rem 5rem}
+    .section h2{font-size:1.4rem;font-weight:700;margin-bottom:1rem}
+    .preview{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;font-size:.85rem;line-height:1.8}
+    .preview h3{font-size:1rem;margin-bottom:1rem;color:var(--accent)}
+    .msg{padding:.75rem;border-left:3px solid var(--border);margin-bottom:.75rem}
+    .msg.parent{border-left-color:var(--accent)}
+    .msg-meta{font-size:.75rem;color:var(--muted);margin-bottom:.3rem}
+    .divider{border:none;border-top:1px solid var(--border);margin:0}
+    footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:.78rem;color:var(--muted)}
+    footer a{color:var(--muted)}.footer a:hover{color:var(--text)}
+  </style>
+</head>
+<body>
+  <nav>
+    <span class="nav-brand">slack-thread-exporter</span>
+    <div class="nav-links">
+      <a href="https://github.com/jishanahmed-shaikh/slack-thread-exporter" target="_blank">GitHub</a>
+    </div>
+  </nav>
+  <section class="hero">
+    <h1>Preserve Slack knowledge<br><em>before it disappears</em></h1>
+    <p>Export any Slack thread to clean Markdown or HTML. Usernames resolved, mrkdwn converted, reactions preserved.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://github.com/jishanahmed-shaikh/slack-thread-exporter" target="_blank">View on GitHub</a>
+    </div>
+    <div class="install-box">
+      <div class="install-top"><span>terminal</span><button class="copy-btn" onclick="copyInstall()">copy</button></div>
+      <div class="install-cmd"><span class="dollar">$</span> pip install slack-thread-exporter</div>
+    </div>
+  </section>
+  <hr class="divider"/>
+  <section class="section" style="padding-top:4rem">
+    <h2>Example output</h2>
+    <div class="preview">
+      <h3>Auth Service Memory Leak — Post-Mortem</h3>
+      <div class="msg parent"><div class="msg-meta"><strong>Alice</strong> — 2026-04-30 12:00 UTC</div>Has anyone looked into the memory leak in the auth service?</div>
+      <div class="msg"><div class="msg-meta"><strong>Bob</strong> — 2026-04-30 12:01 UTC</div>Yes, I traced it to the JWT cache not being cleared on logout. The <code>token_cache</code> dict grows unbounded.</div>
+      <div class="msg"><div class="msg-meta"><strong>Carol</strong> — 2026-04-30 12:02 UTC</div>We should add a TTL or use <code>functools.lru_cache</code> with <code>maxsize</code>. I can open a PR today.</div>
+    </div>
+  </section>
+  <hr class="divider"/>
+  <footer>
+    <p>Built by <a href="https://github.com/jishanahmed-shaikh" target="_blank">Jishanahmed AR Shaikh</a> &nbsp;&middot;&nbsp; <a href="https://github.com/jishanahmed-shaikh/slack-thread-exporter" target="_blank">Source on GitHub</a> &nbsp;&middot;&nbsp; MIT License</p>
+  </footer>
+  <script>function copyInstall(){navigator.clipboard.writeText('pip install slack-thread-exporter');var b=document.querySelector('.copy-btn');b.textContent='copied!';setTimeout(()=>b.textContent='copy',2000)}</script>
+</body>
+</html>
