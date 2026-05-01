@@ -26,8 +26,10 @@ def main(argv=None) -> None:
                         help="Document title (default: 'Slack Thread')")
     parser.add_argument("--token",   default=os.environ.get("SLACK_BOT_TOKEN", ""),
                         help="Slack Bot Token (or set SLACK_BOT_TOKEN env var)")
-    parser.add_argument("--mock",    action="store_true",
+    parser.add_argument("--mock",   action="store_true",
                         help="Use mock data (no Slack token required, for testing)")
+    parser.add_argument("--no-resolve-usernames",   action="store_true",
+                        help="Skip resolving usernames and use raw user IDs")
     parser.add_argument("--version", "-V", action="version",
                         version=f"%(prog)s {__version__}")
 
@@ -64,6 +66,7 @@ def main(argv=None) -> None:
             output_path=output,
             fmt=args.format,
             title=args.title,
+            no_resolve_usernames=args.no_resolve_usernames
         )
         print(f"  Exported to {path}")
     except (ConnectionError, PermissionError, RuntimeError) as exc:
