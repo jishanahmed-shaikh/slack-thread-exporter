@@ -28,6 +28,8 @@ def main(argv=None) -> None:
                         help="Slack Bot Token (or set SLACK_BOT_TOKEN env var)")
     parser.add_argument("--mock",    action="store_true",
                         help="Use mock data (no Slack token required, for testing)")
+    parser.add_argument("--since",   type=str,   
+                        help="Filter messages after given date (YYYY-MM-DD)")
     parser.add_argument("--version", "-V", action="version",
                         version=f"%(prog)s {__version__}")
 
@@ -64,6 +66,7 @@ def main(argv=None) -> None:
             output_path=output,
             fmt=args.format,
             title=args.title,
+            since=args.since,
         )
         print(f"  Exported to {path}")
     except (ConnectionError, PermissionError, RuntimeError) as exc:
