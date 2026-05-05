@@ -4,7 +4,7 @@ import pytest
 from slackexport.client import MockSlackClient, SlackMessage
 from slackexport.formatter import slack_to_markdown, ts_to_datetime
 from slackexport.exporter import ThreadExporter
-
+from datetime import datetime
 
 class TestFormatter:
     def test_bold(self):
@@ -100,3 +100,17 @@ class TestThreadExporter:
         msgs = exp.fetch(mock.MOCK_CHANNEL, mock.MOCK_THREAD_TS)
         md = exp.to_markdown(msgs)
         assert "# Slack Thread" in md
+    
+    def test_since_filters_messages(self):
+        mock = MockSlackClient()
+        exp = ThreadExporter(mock)
+        
+        msgs = exp.fetch(mock.MOCK_CHANNEL, mock.MOCK_THREAD_TS)
+        since_dt = datetime.strptime("2025-01-01", "%Y-%m-%d")
+
+        filtered = [
+            msg for msg in msgs
+            if datetime.fromtimestamp(float(msg.ts.split('.')[0])) >= since_dt
+        ]
+
+        assert len(filtered) == 0
