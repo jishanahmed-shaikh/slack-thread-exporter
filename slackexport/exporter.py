@@ -182,6 +182,7 @@ def export_thread(
     fmt: str = "markdown",
     title: str = "Slack Thread",
     since: Optional[str] = None,
+    no_resolve_usernames: bool = False,
 ) -> str:
     """Export a Slack thread to a file.
 
@@ -208,18 +209,19 @@ def export_thread(
         The output file path.
     """
     from datetime import datetime
-    
+
     since_dt = None
     if since:
         since_dt = datetime.strptime(since, "%Y-%m-%d")
 
-    exporter  = ThreadExporter(client)
+    exporter = ThreadExporter(client, resolve_usernames=not no_resolve_usernames)
+
     messages  = exporter.fetch(channel, thread_ts)
 
     if since_dt:
         messages = [
             msg for msg in messages
-            if datetime.fromtimestamp(float(msg.ts.split('.')[0])) >= since_dt
+            if datetime.fromtimestamp(float(msg.ts.split(".")[0])) >= since_dt
         ]
 
     if fmt == "html":
